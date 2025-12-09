@@ -11,13 +11,13 @@ if ('serviceWorker' in navigator) {
 class SparkleGenerator {
     constructor() {
         this.container = document.getElementById('sparkles');
-        this.textElement = document.querySelector('.floating-text');
+        this.textElements = document.querySelectorAll('.floating-text');
         this.colors = ['#ff0000', '#ff7700', '#ffdd00', '#00ff00', '#0077ff', '#7700ff', '#ff00ff', '#ffffff', '#ffd700'];
         this.init();
     }
 
     init() {
-        // Kontinuierliche Funken um den Text
+        // Kontinuierliche Funken um alle Texte
         setInterval(() => this.createTextSparkles(), 100);
 
         // Zufällige Funken im Hintergrund
@@ -27,28 +27,32 @@ class SparkleGenerator {
         setInterval(() => this.createGlitter(), 150);
     }
 
-    getTextPosition() {
-        if (!this.textElement) return null;
-        const rect = this.textElement.getBoundingClientRect();
-        return {
-            x: rect.left + rect.width / 2,
-            y: rect.top + rect.height / 2,
-            width: rect.width,
-            height: rect.height
-        };
+    getTextPositions() {
+        const positions = [];
+        this.textElements.forEach(el => {
+            const rect = el.getBoundingClientRect();
+            positions.push({
+                x: rect.left + rect.width / 2,
+                y: rect.top + rect.height / 2,
+                width: rect.width,
+                height: rect.height
+            });
+        });
+        return positions;
     }
 
     createTextSparkles() {
-        const pos = this.getTextPosition();
-        if (!pos) return;
+        const positions = this.getTextPositions();
+        if (positions.length === 0) return;
 
-        // Erstelle mehrere Funken um den Text herum
-        for (let i = 0; i < 3; i++) {
-            const offsetX = (Math.random() - 0.5) * pos.width * 1.2;
-            const offsetY = (Math.random() - 0.5) * pos.height * 1.5;
-
-            this.createSparkle(pos.x + offsetX, pos.y + offsetY);
-        }
+        // Erstelle Funken um jeden Text herum
+        positions.forEach(pos => {
+            for (let i = 0; i < 2; i++) {
+                const offsetX = (Math.random() - 0.5) * pos.width * 1.2;
+                const offsetY = (Math.random() - 0.5) * pos.height * 1.5;
+                this.createSparkle(pos.x + offsetX, pos.y + offsetY);
+            }
+        });
     }
 
     createSparkle(x, y) {
@@ -100,8 +104,11 @@ class SparkleGenerator {
     }
 
     createGlitter() {
-        const pos = this.getTextPosition();
-        if (!pos) return;
+        const positions = this.getTextPositions();
+        if (positions.length === 0) return;
+
+        // Wähle zufällig einen Text aus
+        const pos = positions[Math.floor(Math.random() * positions.length)];
 
         const glitter = document.createElement('div');
         glitter.className = 'glitter';
@@ -156,4 +163,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-console.log('🇺🇦 Це справді так? 🇺🇦');
+console.log('🇺🇦 Це справді так, Лідіє? То який тоді мій кінк? 🇺🇦');

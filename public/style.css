@@ -100,6 +100,19 @@ body {
     }
 }
 
+/* Unterschiedliche Positionen und Timing für mehrere Texte */
+.text-1 {
+    top: 25%;
+    animation: float 6s ease-in-out infinite, moveAcross 12s linear infinite;
+}
+
+.text-2 {
+    top: 60%;
+    animation: float 7s ease-in-out infinite, moveAcross 14s linear infinite;
+    animation-delay: -5s;
+    font-size: clamp(1.8rem, 7vw, 5rem);
+}
+
 /* Regenbogen-Text */
 .rainbow-text {
     background: linear-gradient(
